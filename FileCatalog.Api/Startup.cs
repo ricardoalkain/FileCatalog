@@ -32,7 +32,7 @@ namespace FileCatalog.App
                 {
                     Version = "beta",
                     Title = "An Awesome File Catalog API",
-                    Description = "Mess around with files (PDF only for now, sorry for that)",
+                    Description = "Mess around with files in a ordered catalog",
                     Contact = new OpenApiContact
                     {
                         Name = "Rick Alves",

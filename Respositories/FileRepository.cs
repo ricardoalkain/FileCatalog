@@ -166,11 +166,10 @@ namespace FileCatalog.Respositories
 
         /*
          * NOTE: This method could be eliminated if the Position column in the
-         * underlying table had a DEFAULT constraint configured with a DB function that
+         * underlying table column had a DEFAULT constraint configured with a DB function that
          * returned the next available position.
          * I've chosen this way bc it keeps it decopled from database and thus simpler.
          */
-
         private async Task<int> GetNextPosition()
         {
             var lastPos = await Connection.QueryFirstOrDefaultAsync<int>($"SELECT MAX({nameof(FileEntry.Position)}) AS Position FROM {nameof(FileEntry)}");

@@ -49,7 +49,7 @@ namespace FileCatalog.App.Controllers
         [ProducesResponseType(typeof(NotFoundResult), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(int id)
         {
-            return Ok(MapToView(await _repository.GetById(id)));
+            return Ok(MapToView(await _repository.GetByIdAsync(id)));
         }
 
 
@@ -61,7 +61,7 @@ namespace FileCatalog.App.Controllers
         [ProducesResponseType(typeof(IEnumerable<FileEntryView>), StatusCodes.Status200OK)]
         public async Task<IEnumerable<FileEntryView>> GetAll()
         {
-            return MapToView(await _repository.GetAll());
+            return MapToView(await _repository.GetAllAsync());
         }
 
 
@@ -84,7 +84,7 @@ namespace FileCatalog.App.Controllers
         [ProducesResponseType(typeof(NotFoundResult), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Download(int id)
         {
-            var file = await _repository.GetContent(id);
+            var file = await _repository.GetContentAsync(id);
 
             if (file == null)
             {
@@ -126,7 +126,7 @@ namespace FileCatalog.App.Controllers
                     new { statusCode = StatusCodes.Status415UnsupportedMediaType, title = errMsg });
             }
 
-            var entry = MapToView(await _repository.Insert(file));
+            var entry = MapToView(await _repository.InsertAsync(file));
 
             return CreatedAtRoute(nameof(this.GetById), new { id = entry.Id }, entry);
         }
@@ -141,7 +141,7 @@ namespace FileCatalog.App.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task Remove(int id)
         {
-            await _repository.Remove(id);
+            await _repository.RemoveAsync(id);
         }
 
 
@@ -157,7 +157,7 @@ namespace FileCatalog.App.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Reorder(long id, int newPosition)
         {
-            var entry = await _repository.Reorder(id, newPosition);
+            var entry = await _repository.ReorderAsync(id, newPosition);
             if (entry == null)
             {
                 return NotFound();

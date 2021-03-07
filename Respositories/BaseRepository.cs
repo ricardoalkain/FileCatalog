@@ -64,27 +64,27 @@ namespace FileCatalog.Respositories
             Logger.LogDebug("Repository created.");
         }
 
-        public virtual async Task<long> Insert(T entity)
+        public virtual async Task<long> InsertAsync(T entity)
         {
             return await Connection.InsertAsync(entity);
         }
 
-        public virtual async Task<bool> Remove(T entity)
+        public virtual async Task<bool> RemoveAsync(T entity)
         {
             return await Connection.DeleteAsync(entity);
         }
 
-        public async Task<T> GetById(long id)
+        public async Task<T> GetByIdAsync(long id)
         {
             return await Connection.GetAsync<T>(id);
         }
 
-        public async virtual Task<IEnumerable<T>> GetAll()
+        public async virtual Task<IEnumerable<T>> GetAllAsync()
         {
             return await Connection.GetAllAsync<T>();
         }
 
-        public async Task<bool> Update(T entity)
+        public async Task<bool> UpdateAsync(T entity)
         {
             return await Connection.UpdateAsync(entity);
         }

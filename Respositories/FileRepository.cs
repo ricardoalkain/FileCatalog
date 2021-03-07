@@ -21,7 +21,7 @@ namespace FileCatalog.Respositories
         {
         }
 
-        public override async Task<IEnumerable<FileEntry>> GetAll()
+        public override async Task<IEnumerable<FileEntry>> GetAllAsync()
         {
             /*
              * NOTE: We want our list of files sorted by Order.
@@ -29,14 +29,14 @@ namespace FileCatalog.Respositories
              * have it sorted in DB, however for sake of simplicity I opted to do it with Linq.
              */
 
-            return (await base.GetAll()).OrderBy(f => f.Position).AsEnumerable();
+            return (await base.GetAllAsync()).OrderBy(f => f.Position).AsEnumerable();
         }
 
-        public async Task<FileEntry> GetContent(int id)
+        public async Task<FileEntry> GetContentAsync(int id)
         {
             using (Connection)
             {
-                var fileHeader = await GetById(id);
+                var fileHeader = await GetByIdAsync(id);
 
                 if (fileHeader != null)
                 {
@@ -47,7 +47,7 @@ namespace FileCatalog.Respositories
             }
         }
 
-        public async Task<FileEntry> Insert(IFormFile file)
+        public async Task<FileEntry> InsertAsync(IFormFile file)
         {
             var header = new FileEntry
             {
@@ -65,12 +65,12 @@ namespace FileCatalog.Respositories
                 header.Content = mem.ToArray();
             }
 
-            header.Id = await Insert(header);
+            header.Id = await InsertAsync(header);
 
             return header;
         }
 
-        public override async Task<long> Insert(FileEntry header)
+        public override async Task<long> InsertAsync(FileEntry header)
         {
             try
             {
@@ -101,11 +101,11 @@ namespace FileCatalog.Respositories
             }
         }
 
-        public async Task<bool> Remove(long id)
+        public async Task<bool> RemoveAsync(long id)
         {
-            var header = await GetById(id);
+            var header = await GetByIdAsync(id);
 
-            return header != null && await Remove(header);
+            return header != null && await RemoveAsync(header);
         }
 
 
@@ -137,28 +137,28 @@ namespace FileCatalog.Respositories
         //    }
         //}
 
-        public async Task<FileEntry> GetByPosition(int position)
+        public async Task<FileEntry> GetByPositionAsync(int position)
         {
             return await Connection.QueryFirstOrDefaultAsync<FileEntry>($"SELECT * FROM {TableName} WHERE Position = {position}");
         }
 
-        public async Task<FileEntry> Reorder(long id, int newPosition)
+        public async Task<FileEntry> ReorderAsync(long id, int newPosition)
         {
 
-            var header = await GetById(id);
+            var header = await GetByIdAsync(id);
 
             if (header != null)
             {
                 Logger.LogDebug($"Moving file {id} from position {header.Position} to {newPosition}");
 
-                var clash = await GetByPosition(newPosition);
+                var clash = await GetByPositionAsync(newPosition);
                 if (clash != null)
                 {
                     await ShiftPositions(header.Position, newPosition);
                 }
 
                 header.Position = newPosition;
-                await Update(header);
+                await UpdateAsync(header);
             }
 
             return header;

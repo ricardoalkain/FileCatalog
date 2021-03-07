@@ -8,14 +8,14 @@ namespace FileCatalog.Respositories.Interfaces
 {
     public interface IFileRepository : IBaseRepository<FileEntry>
     {
-        Task<FileEntry> GetContent(int id);
+        Task<FileEntry> GetContentAsync(int id);
 
-        Task<FileEntry> Insert(IFormFile file);
+        Task<FileEntry> InsertAsync(IFormFile file);
 
-        Task<bool> Remove(long id);
+        Task<bool> RemoveAsync(long id);
 
-        Task<FileEntry> GetByPosition(int position);
+        Task<FileEntry> GetByPositionAsync(int position);
 
-        Task<FileEntry> Reorder(long id, int newPosition);
+        Task<FileEntry> ReorderAsync(long id, int newPosition);
     }
 }
